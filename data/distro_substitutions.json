@@ -1,0 +1,21 @@
+{
+  "debian": {
+    "firefox": "firefox-esr",
+    "steam": "steam-installer"
+  },
+  "ubuntu": {
+    "firefox-esr": "firefox"
+  },
+  "arch": {
+    "steam": "steam-native-runtime"
+  },
+  "manjaro": {
+    "steam": "steam-native-runtime"
+  },
+  "fedora": {
+    "chromium": "chromium-browser"
+  },
+  "opensuse": {
+    "chromium": "chromium"
+  }
+}

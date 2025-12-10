@@ -1,0 +1,32 @@
+{
+  "name": "backmey",
+  "version": "0.1.0",
+  "description": "Electron UI for ULDBR backup/restore",
+  "main": "main.js",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.backmey.app",
+    "productName": "Backmey",
+    "files": [
+      "**/*"
+    ],
+    "linux": {
+      "target": "AppImage",
+      "category": "Utility",
+      "icon": "../logo.png"
+    },
+    "extraResources": [
+      {
+        "from": "../backmey.py",
+        "to": "backmey.py"
+      }
+    ]
+  },
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  }
+}

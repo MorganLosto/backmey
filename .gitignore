@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Electron / Node
+node_modules/
+dist/
+electron/dist/
+electron/node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backmey specifics
+aur/
+*.log
+backmey.error.log
+temp/
+snapshots/

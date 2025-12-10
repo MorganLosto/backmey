@@ -1,0 +1,819 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;" />
+  <title>Backmey Electron</title>
+  <style>
+    :root {
+      --bg: #0a0f17;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --border: #374151;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --danger: #ef4444;
+      --radius: 12px;
+      --font-family: "Inter", system-ui, -apple-system, sans-serif;
+      --sidebar-width: 280px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-family);
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .app-container {
+      display: grid;
+      grid-template-columns: var(--sidebar-width) 1fr;
+      height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: rgba(17, 24, 39, 0.95);
+      border-right: 1px solid var(--border);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .brand h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--text);
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent), #3b82f6);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .widget {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .widget-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .widget-content {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .widget-content.highlight {
+      color: var(--accent);
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-right: 6px;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+    }
+
+    /* Main Content */
+    main {
+      padding: 32px 40px;
+      overflow-y: auto;
+      height: 100vh;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+    }
+
+    h3 {
+      margin: 20px 0 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--panel);
+      padding: 4px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      width: fit-content;
+    }
+
+    .tab-btn {
+      background: transparent;
+      color: var(--muted);
+      border: none;
+      padding: 8px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      background: var(--panel-2);
+      color: var(--accent);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      margin-bottom: 24px;
+    }
+
+    /* Form Elements */
+    label {
+      display: block;
+      margin: 16px 0 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+      background: #1a2230;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: var(--accent);
+      color: #0f172a;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+    }
+
+    .actions button:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Component grouping styles */
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .component-group h5 {
+      margin: 0 0 8px 0;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 4px;
+    }
+
+    .component-group .checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Modal Styles */
+    button:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(56, 189, 248, 0.3);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button.secondary {
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    button.secondary:hover {
+      background: #374151;
+      border-color: #4b5563;
+      box-shadow: none;
+    }
+
+    button.ghost {
+      background: transparent;
+      color: var(--muted);
+      padding: 6px 12px;
+      font-weight: 500;
+      box-shadow: none;
+    }
+
+    button.ghost:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    button.icon-btn {
+      padding: 6px;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid transparent;
+      box-shadow: none;
+    }
+
+    button.icon-btn:hover {
+      color: var(--text);
+      background: var(--panel-2);
+      border-color: var(--border);
+    }
+
+    .checkboxes {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s;
+    }
+
+    .chip:hover {
+      border-color: var(--muted);
+      background: #2d3748;
+    }
+
+    .chip input {
+      margin: 0;
+      accent-color: var(--accent);
+      width: 16px;
+      height: 16px;
+    }
+
+    .log {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      padding: 20px;
+      height: 300px;
+      overflow-y: auto;
+      border-radius: 10px;
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+      font-size: 13px;
+      color: #e5e7eb;
+      position: relative;
+    }
+
+    .card {
+      background: rgba(30, 41, 59, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      background: rgba(30, 41, 59, 0.6);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .card.selected {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .card:hover::before,
+    .card.selected::before {
+      opacity: 1;
+    }
+
+    .log pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .version-list::-webkit-scrollbar {
+      height: 4px;
+      /* Thin */
+    }
+
+    .version-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .version-list::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+    }
+
+    .version-list::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .advanced {
+      display: none;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .advanced.show {
+      display: block;
+      animation: slideDown 0.2s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #4b5563;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #6b7280;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">B</div>
+        <h1>Backmey</h1>
+      </div>
+
+      <div class="widget">
+        <div class="widget-title">Environment</div>
+        <div class="widget-content" id="detect-output">
+          <span style="color: var(--muted);">Detecting...</span>
+        </div>
+      </div>
+
+      <div class="widget">
+        <div class="widget-title">Status</div>
+        <div class="widget-content" id="latest-status">
+          <span class="status-dot"></span><span id="status-text">Ready</span>
+        </div>
+      </div>
+
+      <div style="flex: 1;"></div>
+
+      <div class="widget" style="background: rgba(56, 189, 248, 0.05); border-color: rgba(56, 189, 248, 0.2);">
+        <div class="widget-title" style="color: var(--accent);">Quick Tip</div>
+        <div class="widget-content" style="font-size: 13px; line-height: 1.4;">
+          Use profiles + dry-run to preview before running full backups.
+        </div>
+      </div>
+
+      <button class="secondary" id="refresh" style="width: 100%;">Refresh Backups</button>
+    </aside>
+
+    <main>
+      <nav class="tabs">
+        <button class="tab-btn active" data-tab="tab-backup">Backup</button>
+        <button class="tab-btn" data-tab="tab-restore">Restore</button>
+      </nav>
+
+      <div class="tab-content active" id="tab-backup">
+        <section>
+          <div class="row" style="justify-content: space-between; margin-bottom: 16px;">
+            <h2>Backup System</h2>
+          </div>
+
+          <label>Profile</label>
+          <input id="backup-profile" type="text" placeholder="default" title="Name of the backup profile to use" />
+
+          <h3>Destination</h3>
+          <div class="row" style="align-items: flex-start; gap: 20px; margin-bottom: 20px;">
+            <div style="flex: 1;">
+              <label class="chip" style="width: 100%; justify-content: flex-start;">
+                <input type="radio" name="dest-type" value="default" checked data-dest="default" />
+                Default (Internal)
+              </label>
+              <div class="subtle" style="margin-left: 30px; margin-top: 4px; font-size: 11px; color: var(--muted);">
+                ~/.backmey/backups
+              </div>
+            </div>
+
+            <div style="flex: 1;">
+              <label class="chip" style="width: 100%; justify-content: flex-start;">
+                <input type="radio" name="dest-type" value="custom" data-dest="custom" />
+                Custom / External
+              </label>
+              <div class="dest-option" id="dest-custom" style="display: none; margin-top: 8px;">
+                <div class="row" style="gap: 8px;">
+                  <button type="button" class="secondary" id="browse-dest-btn"
+                    style="padding: 8px 12px; font-size: 12px;">Browse</button>
+                  <div id="custom-path-display"
+                    style="font-size: 12px; color: var(--accent); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 150px;">
+                    No path selected
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Folders Section -->
+          <div style="margin-top: 20px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <h3>Folders</h3>
+              <button class="secondary small" id="add-custom-include"
+                style="padding: 4px 10px; font-size: 12px; height: auto;">+ Add Folder</button>
+            </div>
+            <div id="custom-includes-list" style="display: flex; flex-direction: column; gap: 6px;">
+              <!-- Dynamic items will appear here -->
+              <div class="subtle" style="font-size: 13px; font-style: italic; padding: 5px 0;">No extra folders
+                selected yet.</div>
+            </div>
+          </div>
+
+          <h3>Components</h3>
+          <div class="checkboxes" id="backup-components"></div>
+
+          <h3>Options</h3>
+          <div class="component-grid">
+
+            <!-- Behavior Settings -->
+            <div class="component-group">
+              <h5>Behavior</h5>
+              <div class="checkboxes">
+                <label class="chip">
+                  <input type="checkbox" value="report" id="backup-report" checked /> Preview Sizes
+                </label>
+                <label class="chip">
+                  <input type="checkbox" value="no_packages" id="backup-no-packages" /> Skip Packages
+                </label>
+                <label class="chip" title="Ignore junk folders (node_modules, .git, cache, etc)">
+                  <input type="checkbox" id="backup-smart-exclude" checked /> Smart Exclusions
+                </label>
+              </div>
+              <div style="margin-top: 8px;">
+                <textarea id="backup-custom-exclude"
+                  placeholder="Custom exclusion patterns (comma separated, e.g. *.log, temp/)"
+                  style="width: 100%; height: 60px; font-size: 13px;"></textarea>
+              </div>
+            </div>
+
+            <!-- Desktop Integration -->
+            <div class="component-group">
+              <h5>Desktop</h5>
+              <div class="checkboxes">
+                <label class="chip" title="Backup GNOME/GTK desktop settings">
+                  <input type="checkbox" value="dconf" id="backup-dconf" checked /> Dconf Settings
+                </label>
+              </div>
+            </div>
+
+            <!-- Security -->
+            <div class="component-group">
+              <h5>Security</h5>
+              <div class="checkboxes">
+                <label class="chip" title="Encrypt the archive with GPG (password required)" style="width: 100%;">
+                  <input type="checkbox" id="backup-encrypt" /> Encrypt Archive
+                </label>
+              </div>
+              <div id="passphrase-group" style="display: none; margin-top: 8px;">
+                <input type="password" id="backup-passphrase" placeholder="Enter GPG Passphrase..."
+                  style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text);" />
+              </div>
+            </div>
+
+          </div>
+
+          <div class="actions">
+            <button class="ghost" id="backup-select-all">Select All</button>
+            <button class="ghost" id="backup-select-default">Defaults</button>
+            <button class="ghost" id="backup-select-none">None</button>
+          </div>
+
+
+
+          <div class="row" style="margin-top: 20px;">
+            <button class="secondary" id="backup-advanced-toggle">Advanced Options</button>
+          </div>
+
+          <div class="advanced" id="backup-advanced">
+            <label>Version</label>
+            <input id="backup-version" type="text" placeholder="auto timestamp"
+              title="Custom version string for the backup" />
+
+            <label>Output path</label>
+            <input id="backup-output" type="text" placeholder="override tar.gz path"
+              title="Custom path to save the backup archive" />
+
+            <label>Sync command</label>
+            <textarea id="backup-sync" placeholder="e.g. rclone copy {archive} remote:uldbr/"
+              title="Command to run after backup (use {archive} placeholder)"></textarea>
+
+            <div class="row">
+              <textarea id="backup-notes" placeholder="Notes (optional)" rows="1"></textarea>
+            </div>
+          </div>
+
+
+          <div class="row" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
+            <button id="backup-run">Run Backup</button>
+            <button class="secondary" id="backup-preview">Preview Only</button>
+          </div>
+        </section>
+      </div>
+
+      <div class="tab-content" id="tab-restore">
+        <section>
+          <div class="row" style="justify-content: space-between; margin-bottom: 16px;">
+            <h2>Restore System</h2>
+            <button class="secondary" id="refresh-list">Refresh List</button>
+          </div>
+
+          <!-- Restore Source (Browse/Default) -->
+          <div class="section-box"
+            style="margin-bottom: 20px; padding: 15px; background: var(--surface); border-radius: 8px;">
+            <h3 style="margin-top: 0; margin-bottom: 12px;">Source</h3>
+            <div class="row" style="gap: 16px;">
+              <label class="chip">
+                <input type="radio" name="restore-source" value="default" checked data-source="default" />
+                Default Location
+              </label>
+              <label class="chip">
+                <input type="radio" name="restore-source" value="custom" data-source="custom" />
+                Custom Archive
+              </label>
+            </div>
+            <div id="restore-custom-src" style="display: none; margin-top: 12px;">
+              <div class="row" style="gap: 8px;">
+                <button type="button" class="secondary" id="browse-restore-source-btn">Browse Archive...</button>
+                <div id="restore-src-display"
+                  style="font-size: 12px; color: var(--accent); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                  No file selected</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Backups List -->
+          <h3 style="margin-bottom: 12px;">Available Backups</h3>
+          <div id="backups-list"
+            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 32px;">
+            <div style="grid-column: 1/-1; color: var(--muted); font-style: italic;">Loading backups...</div>
+          </div>
+
+
+          <hr style="border-color: var(--border); margin: 24px 0;">
+
+          <!-- Restore Components -->
+          <h3>Components to Restore</h3>
+          <div style="margin-bottom: 8px; font-size: 13px; color: var(--muted);">Leave all checked to restore everything
+            in the backup.</div>
+          <div class="checkboxes" id="restore-components"></div>
+          <div class="actions" style="margin-top: 10px;">
+            <button class="ghost small" id="restore-select-all">Select All</button>
+            <button class="ghost small" id="restore-select-none">None</button>
+          </div>
+
+          <hr style="border-color: var(--border); margin: 24px 0;">
+
+          <h3>Restore Options</h3>
+          <div class="row" style="align-items: flex-start; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+            <div style="flex: 1; min-width: 250px;">
+              <label>Profile</label>
+              <input id="restore-profile" type="text" placeholder="default" title="Profile to restore to" />
+            </div>
+            <div style="flex: 1; min-width: 250px;">
+              <label>Passphrase (if encrypted)</label>
+              <input type="password" id="restore-passphrase" placeholder="GPG Passphrase..."
+                style="padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text);" />
+            </div>
+          </div>
+
+          <div class="checkboxes" style="margin-bottom: 20px;">
+            <label class="chip"><input id="restore-skip" type="checkbox" /> Skip Conflicts</label>
+            <label class="chip"><input id="restore-install" type="checkbox" /> Reinstall Packages</label>
+            <label class="chip"><input id="restore-install-dry" type="checkbox" checked /> Install Dry-Run</label>
+          </div>
+
+          <div class="row" style="margin-bottom: 20px;">
+            <button class="secondary" id="restore-advanced-toggle">Advanced Options</button>
+          </div>
+
+          <div class="advanced" id="restore-advanced">
+            <label>Explicit Version</label>
+            <input id="restore-version" type="text" placeholder="latest" title="Specific version to restore" />
+
+            <label>Archive Path Override</label>
+            <input id="restore-archive" type="text" placeholder="path/to/archive.tar.gz"
+              title="Direct path to backup archive" />
+
+            <label>Template Override</label>
+            <input id="restore-template" type="text" placeholder="template name"
+              title="Use a template for restoration" />
+          </div>
+
+          <!-- Action -->
+          <div class="row" style="margin-top: 24px;">
+            <button id="restore-run" style="width: 100%;">Run Restore</button>
+          </div>
+
+          <div class="log" id="backups-log" style="margin-top: 20px;"></div>
+        </section>
+      </div>
+      </section>
+  </div><!-- End of single tab-restore div -->
+
+  <!-- Duplicate 'Backups & Templates' section removed -->
+
+  <section>
+    <div class="row" style="justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <h2>Activity Log</h2>
+      <div class="row">
+        <span class="pill" id="activity-hint">Outputs from CLI actions appear here</span>
+        <button class="icon-btn" id="copy-log-btn" title="Copy to clipboard">Copy</button>
+      </div>
+    </div>
+    <div class="log" id="log"></div>
+  </section>
+  </main>
+  </div>
+
+  <dialog id="preview-modal"
+    style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; color: var(--text); padding: 24px; max-width: 500px; width: 90%;">
+    <h3 style="margin-top: 0; color: var(--accent);">Backup Preview</h3>
+    <div id="preview-content" style="margin: 16px 0; font-family: monospace; font-size: 13px;"></div>
+    <div class="row" style="justify-content: flex-end;">
+      <button id="preview-close-btn" class="secondary">Close</button>
+    </div>
+  </dialog>
+
+  <script src="renderer.js"></script>
+</body>
+
+</html>

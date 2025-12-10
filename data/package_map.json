@@ -1,0 +1,232 @@
+{
+  "firefox": [
+    "firefox",
+    "firefox-esr",
+    "org.mozilla.firefox",
+    "flatpak:org.mozilla.firefox"
+  ],
+  "chromium": [
+    "chromium",
+    "chromium-browser",
+    "org.chromium.Chromium",
+    "flatpak:org.chromium.Chromium"
+  ],
+  "google-chrome": [
+    "google-chrome-stable",
+    "google-chrome",
+    "com.google.Chrome",
+    "flatpak:com.google.Chrome"
+  ],
+  "brave-browser": [
+    "brave-browser",
+    "brave-bin",
+    "com.brave.Browser",
+    "flatpak:com.brave.Browser"
+  ],
+  "opera": [
+    "opera",
+    "opera-stable",
+    "com.opera.Opera",
+    "flatpak:com.opera.Opera"
+  ],
+  "vscodium": [
+    "vscodium",
+    "codium",
+    "com.vscodium.codium",
+    "flatpak:com.vscodium.codium"
+  ],
+  "visual-studio-code": [
+    "code",
+    "visual-studio-code",
+    "visual-studio-code-bin",
+    "com.visualstudio.code",
+    "flatpak:com.visualstudio.code"
+  ],
+  "vim": [
+    "vim",
+    "gvim"
+  ],
+  "neovim": [
+    "neovim",
+    "nvim",
+    "io.neovim.nvim",
+    "flatpak:io.neovim.nvim"
+  ],
+  "emacs": [
+    "emacs",
+    "gnu-emacs"
+  ],
+  "tmux": [
+    "tmux"
+  ],
+  "zsh": [
+    "zsh"
+  ],
+  "fish": [
+    "fish"
+  ],
+  "git": [
+    "git"
+  ],
+  "docker": [
+    "docker",
+    "docker-ce",
+    "moby-engine",
+    "io.docker.docker"
+  ],
+  "podman": [
+    "podman"
+  ],
+  "alacritty": [
+    "alacritty",
+    "org.alacritty.Alacritty",
+    "flatpak:org.alacritty.Alacritty"
+  ],
+  "kitty": [
+    "kitty",
+    "net.kovidgoyal.kitty",
+    "flatpak:net.kovidgoyal.kitty"
+  ],
+  "wezterm": [
+    "wezterm",
+    "wezterm-nightly",
+    "org.wezfurlong.wezterm",
+    "flatpak:org.wezfurlong.wezterm"
+  ],
+  "foot": [
+    "foot",
+    "foot-terminfo"
+  ],
+  "konsole": [
+    "konsole",
+    "org.kde.konsole",
+    "flatpak:org.kde.konsole"
+  ],
+  "gnome-terminal": [
+    "gnome-terminal",
+    "org.gnome.Terminal",
+    "flatpak:org.gnome.Terminal"
+  ],
+  "tilix": [
+    "tilix",
+    "com.gexperts.Tilix",
+    "flatpak:com.gexperts.Tilix"
+  ],
+  "terminator": [
+    "terminator"
+  ],
+  "gnome-shell": [
+    "gnome-shell"
+  ],
+  "plasma-desktop": [
+    "plasma-desktop",
+    "plasma-workspace"
+  ],
+  "xfce": [
+    "xfce4",
+    "xfce-desktop"
+  ],
+  "xfce4-terminal": [
+    "xfce4-terminal"
+  ],
+  "mate": [
+    "mate",
+    "mate-desktop"
+  ],
+  "cinnamon": [
+    "cinnamon",
+    "cinnamon-desktop"
+  ],
+  "lxqt": [
+    "lxqt",
+    "lxqt-desktop"
+  ],
+  "lxde": [
+    "lxde",
+    "lxde-common"
+  ],
+  "i3": [
+    "i3",
+    "i3-wm",
+    "i3-gaps"
+  ],
+  "sway": [
+    "sway"
+  ],
+  "hyprland": [
+    "hyprland"
+  ],
+  "awesome": [
+    "awesome"
+  ],
+  "qtile": [
+    "qtile"
+  ],
+  "waybar": [
+    "waybar"
+  ],
+  "steam": [
+    "steam",
+    "steam-launcher",
+    "com.valvesoftware.Steam",
+    "flatpak:com.valvesoftware.Steam"
+  ],
+  "discord": [
+    "discord",
+    "com.discordapp.Discord",
+    "flatpak:com.discordapp.Discord"
+  ],
+  "slack": [
+    "slack-desktop",
+    "slack",
+    "com.slack.Slack",
+    "flatpak:com.slack.Slack"
+  ],
+  "teams": [
+    "teams",
+    "teams-for-linux",
+    "com.microsoft.Teams",
+    "flatpak:com.microsoft.Teams"
+  ],
+  "vlc": [
+    "vlc",
+    "org.videolan.VLC",
+    "flatpak:org.videolan.VLC"
+  ],
+  "spotify": [
+    "spotify",
+    "spotify-client",
+    "com.spotify.Client",
+    "flatpak:com.spotify.Client"
+  ],
+  "gimp": [
+    "gimp",
+    "org.gimp.GIMP",
+    "flatpak:org.gimp.GIMP"
+  ],
+  "inkscape": [
+    "inkscape",
+    "org.inkscape.Inkscape",
+    "flatpak:org.inkscape.Inkscape"
+  ],
+  "obs-studio": [
+    "obs-studio",
+    "com.obsproject.Studio",
+    "flatpak:com.obsproject.Studio"
+  ],
+  "virtualbox": [
+    "virtualbox",
+    "virtualbox-bin"
+  ],
+  "thunderbird": [
+    "thunderbird",
+    "org.mozilla.Thunderbird",
+    "flatpak:org.mozilla.Thunderbird"
+  ],
+  "libreoffice": [
+    "libreoffice",
+    "libreoffice-fresh",
+    "org.libreoffice.LibreOffice",
+    "flatpak:org.libreoffice.LibreOffice"
+  ]
+}
